@@ -1,6 +1,5 @@
 # Symfony
 /var/
-/bin/
 /vendor/
 /.env.local
 /.env.test.local

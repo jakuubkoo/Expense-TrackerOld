@@ -5,7 +5,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/backend/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/backend/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/backend/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
@@ -96,7 +95,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/theseer/tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/composer" />
-      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/dama/doctrine-test-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/cache" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/collections" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/data-fixtures" />
