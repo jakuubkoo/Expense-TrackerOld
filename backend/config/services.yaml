@@ -20,5 +20,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # validate jwt tokens middleware
+    App\Middleware\TokenValidationMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 1 }
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
