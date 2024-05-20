@@ -38,15 +38,32 @@ jobs:
 
       # install dependencies
       - name: Install dependencies
-        run: |
-          composer install
-          php bin/console lexik:jwt:generate-keypair
+        run: composer install
+        working-directory: ./backend
+
+      # ensure bin/console is executable
+      - name: Ensure bin/console is executable
+        run: chmod +x bin/console
+        working-directory: ./backend
+
+      # clear cache
+      - name: Clear cache
+        run: php bin/console cache:clear
+        working-directory: ./backend
+
+      # debug - list files in bin directory
+      - name: List files in bin directory
+        run: ls -la bin
+        working-directory: ./backend
+
+      # create JWT keys
+      - name: Generate JWT key pair
+        run: php bin/console lexik:jwt:generate-keypair
         working-directory: ./backend
 
       # create database
       - name: Create database
-        run: |
-          php bin/console doctrine:database:create --env=test
+        run: php bin/console doctrine:database:create --env=test
         working-directory: ./backend
 
       # migrate database
