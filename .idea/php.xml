@@ -201,6 +201,7 @@
       <path value="$PROJECT_DIR$/backend/vendor/symfony/runtime" />
       <path value="$PROJECT_DIR$/backend/vendor/symfony/security-bundle" />
       <path value="$PROJECT_DIR$/backend/vendor/symfony/security-core" />
+      <path value="$PROJECT_DIR$/backend/vendor/dama/doctrine-test-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

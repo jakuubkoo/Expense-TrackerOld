@@ -1,0 +1,14 @@
+parameters:
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+    scanDirectories:
+        - var/cache/dev/Symfony/Config
+    scanFiles:
+        - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
+    level: 6
+    paths:
+        - config
+        - src
+        - tests
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
