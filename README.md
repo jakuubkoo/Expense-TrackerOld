@@ -16,9 +16,9 @@ Expense Tracker is a web application designed to help users manage their persona
 
 ## Version 0.1
 - **User Authentication**
-  - [ ] Implement basic authentication system
-  - [ ] User registration
-  - [ ] User login and logout
+  - [x] Implement authentication system
+  - [x] User registration
+  - [x] User login and logout
 
 - **Expense Management**
   - [ ] Add new expenses
