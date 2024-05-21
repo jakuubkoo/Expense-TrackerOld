@@ -51,6 +51,11 @@ jobs:
         run: php bin/console doctrine:database:create --env=test
         working-directory: ./backend
 
+      # install make bundle
+      - name: Install maker bundle
+        run: composer require --dev symfony/maker-bundle
+        working-directory: ./backend
+
       # migrate database
       - name: Migrate database
         run: |
