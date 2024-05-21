@@ -6,6 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class IndexControllerTest extends WebTestCase
 {
+
+    /**
+     * @return void
+     */
     public function testIndex()
     {
         $client = static::createClient();

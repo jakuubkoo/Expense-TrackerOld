@@ -54,6 +54,5 @@ class UserFixtures extends Fixture
 
         // commit and re-start new transaction
         $this->connection->commit();
-        $this->connection->beginTransaction();
     }
 }

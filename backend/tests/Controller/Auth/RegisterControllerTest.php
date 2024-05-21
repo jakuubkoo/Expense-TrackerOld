@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RegisterControllerTest extends WebTestCase
 {
+    /**
+     * @return void
+     */
     public function testRegisterMissingFields()
     {
         $client = static::createClient();
@@ -23,6 +26,9 @@ class RegisterControllerTest extends WebTestCase
         $this->assertContains(['message' => ErrorMessage::NO_FIRST_NAME], $responseData);
     }
 
+    /**
+     * @return void
+     */
     public function testRegisterPasswordMismatch()
     {
         $client = static::createClient();
@@ -40,6 +46,9 @@ class RegisterControllerTest extends WebTestCase
         $this->assertContains(['message' => ErrorMessage::PASSWORD_CONFIRMATION_MISMATCH], $responseData);
     }
 
+    /**
+     * @return void
+     */
     public function testRegisterEmailAlreadyExists()
     {
         $userRepository = $this->createMock(UserRepository::class);
@@ -63,6 +72,9 @@ class RegisterControllerTest extends WebTestCase
         $this->assertContains(['message' => ErrorMessage::EMAIL_ALREADY_EXISTS], $responseData);
     }
 
+    /**
+     * @return void
+     */
     public function testRegisterSuccessful()
     {
         $userRepository = $this->createMock(UserRepository::class);
@@ -87,6 +99,9 @@ class RegisterControllerTest extends WebTestCase
         $this->assertContains(['message' => 'Registration successful.'], $responseData);
     }
 
+    /**
+     * @return void
+     */
     public function testRegisterUnexpectedError()
     {
         $userRepository = $this->createMock(UserRepository::class);

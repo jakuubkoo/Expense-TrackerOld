@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,6 +24,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    /**
+     * @var array<mixed>
+     */
     #[ORM\Column]
     private array $roles = [];
 

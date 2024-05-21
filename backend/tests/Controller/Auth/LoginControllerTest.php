@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginControllerTest extends WebTestCase
 {
+    /**
+     * @return void
+     */
     public function testSuccessfulLogin()
     {
         $client = static::createClient();
@@ -42,6 +45,9 @@ class LoginControllerTest extends WebTestCase
         $this->assertNotEmpty($loginData['token']);
     }
 
+    /**
+     * @return void
+     */
     public function testLoginWithIncorrectPassword()
     {
         $client = static::createClient();
@@ -74,6 +80,9 @@ class LoginControllerTest extends WebTestCase
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $loginResponse->getStatusCode());
     }
 
+    /**
+     * @return void
+     */
     public function testLoginWithNonExistentUser()
     {
         $client = static::createClient();

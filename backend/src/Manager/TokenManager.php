@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
@@ -50,7 +51,7 @@ class TokenManager
     {
         try {
             return $this->cacheManager->isCached('auth_token_' . $token);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // TODO: Handle error
             return false;
         }
@@ -69,7 +70,7 @@ class TokenManager
             if (!$this->isTokenBlacklisted($token)) {
                 $this->cacheManager->setValue('auth_token_' . $token, 'auth_token', 604800);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // TODO: Handle error
         }
     }
@@ -85,7 +86,7 @@ class TokenManager
     {
         try {
             $this->cacheManager->deleteValue('auth_token_' . $token);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // TODO: Handle error
         }
     }
@@ -101,7 +102,7 @@ class TokenManager
     {
         try {
             return $request->headers->get('Authorization');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // TODO: Handle error
             return null;
         }
@@ -110,19 +111,27 @@ class TokenManager
     /**
      * Decodes a JWT token.
      *
+     * This method decodes the provided JWT token using the configured JWT encoder.
+     * It returns an associative array containing the payload of the decoded token.
+     * If decoding fails due to any error, an empty array is returned.
+     *
      * @param string $token The JWT token to decode.
      *
-     * @return array The decoded token data.
+     * @return array<mixed> The decoded payload of the JWT token as an associative array.
+     *               If decoding fails due to any error, an empty array is returned.
+     *
+     * @throws Exception If an error occurs while decoding the token, and it cannot be handled gracefully.
      */
     public function decodeToken(string $token): array
     {
         try {
             return $this->jwtEncoderInterface->decode($token);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // TODO: Handle error
             return [];
         }
     }
+
 
     /**
      * Validates a JWT token.
@@ -151,7 +160,7 @@ class TokenManager
 
             // The token is valid
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // TODO: Handle error
             return false;
         }
