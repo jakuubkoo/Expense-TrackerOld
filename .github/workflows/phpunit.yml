@@ -16,7 +16,7 @@ jobs:
     # define services required for the job
     services:
       mysql:
-        image: mysql:latest
+        image: mariadb:latest
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
