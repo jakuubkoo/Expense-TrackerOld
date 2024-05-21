@@ -1,13 +1,25 @@
 doctrine:
+#    dbal:
+#        url: '%env(resolve:DATABASE_URL)%'
+#
+#        # IMPORTANT: You MUST configure your server version,
+#        # either here or in the DATABASE_URL env var (see .env file)
+#        #server_version: '16'
+#
+#        profiling_collect_backtrace: '%kernel.debug%'
+#        use_savepoints: true
     dbal:
-        url: '%env(resolve:DATABASE_URL)%'
+        # database data (get from .env)
+        driver: '%env(DATABASE_DRIVER)%'
+        host: '%env(DATABASE_HOST)%'
+        port: '%env(DATABASE_PORT)%'
+        dbname: '%env(DATABASE_NAME)%'
+        user: '%env(resolve:DATABASE_USERNAME)%'
+        password: '%env(resolve:DATABASE_PASSWORD)%'
 
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '16'
-
+        # database server version
+        server_version: '8.0.31'
         profiling_collect_backtrace: '%kernel.debug%'
-        use_savepoints: true
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
