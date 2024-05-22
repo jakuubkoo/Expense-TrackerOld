@@ -142,8 +142,6 @@
       <path value="$PROJECT_DIR$/backend/vendor/phpunit/php-text-template" />
       <path value="$PROJECT_DIR$/backend/vendor/phpunit/php-timer" />
       <path value="$PROJECT_DIR$/backend/vendor/phar-io/version" />
-      <path value="$PROJECT_DIR$/backend/vendor/phpstan/phpstan" />
-      <path value="$PROJECT_DIR$/backend/vendor/phpstan/phpstan-symfony" />
       <path value="$PROJECT_DIR$/backend/vendor/phpunit/php-code-coverage" />
       <path value="$PROJECT_DIR$/backend/vendor/lexik/jwt-authentication-bundle" />
       <path value="$PROJECT_DIR$/backend/vendor/nikic/php-parser" />
@@ -202,6 +200,8 @@
       <path value="$PROJECT_DIR$/backend/vendor/symfony/security-bundle" />
       <path value="$PROJECT_DIR$/backend/vendor/symfony/security-core" />
       <path value="$PROJECT_DIR$/backend/vendor/dama/doctrine-test-bundle" />
+      <path value="$PROJECT_DIR$/backend/vendor/phpstan/phpstan" />
+      <path value="$PROJECT_DIR$/backend/vendor/phpstan/phpstan-symfony" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
