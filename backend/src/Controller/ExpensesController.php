@@ -112,4 +112,16 @@ class ExpensesController extends AbstractController
             'message' => 'Expense edited successfully!'
         ], Response::HTTP_OK);
     }
+
+    /**
+     * Handles the deleteExpense endpoint.
+     *
+     * @param Request $request The HTTP request.
+     * @return JsonResponse The JSON response indicating success or failure of the delete operation.
+     */
+    #[Route('/deleteExpense', name: 'delete_expense', methods: ['POST'])]
+    public function deleteExpense(Request $request): JsonResponse
+    {
+        return $this->expensesManager->deleteExpense($request);
+    }
 }

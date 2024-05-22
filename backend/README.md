@@ -16,64 +16,63 @@ Expense Tracker is a web application designed to help users manage their persona
 
 ## Version 0.1
 - **User Authentication**
-  - Implement basic authentication system
-  - User registration
-  - User login and logout
+  - [x] Implement authentication system
+  - [x] User registration
+  - [x] User login and logout
 
 - **Expense Management**
-  - Add new expenses
-  - Display a list of expenses
-  - View expense details
+  - [x] Add new expenses
+  - [x] Display a list of expenses
 
 ## Version 0.2
 - **Edit and Delete Expenses**
-  - Edit existing expenses
-  - Delete expenses
+  - [x] Edit existing expenses
+  - [x] Delete expenses
 
 - **Expense Categorization**
-  - Add expense categories
-  - Filter expenses by categories
+  - [ ] Add expense categories
+  - [ ] Filter expenses by categories
 
 ## Version 0.3
 - **Expense Statistics**
-  - Display total expenses over a selected period
-  - Display expenses by categories
-  - Basic graphical representation of expenses (e.g., pie chart)
+  - [ ] Display total expenses over a selected period
+  - [ ] Display expenses by categories
+  - [ ] Basic graphical representation of expenses (e.g., pie chart)
 
 - **User Dashboard**
-  - Overview of recent expenses
-  - Summary of total expenses and category breakdown
+  - [ ] Overview of recent expenses
+  - [ ] Summary of total expenses and category breakdown
 
 ## Version 0.4
 - **Notifications**
-  - Set up email notifications for expense tracking
-  - Configurable notification settings
+  - [ ] Set up email notifications for expense tracking
+  - [ ] Configurable notification settings
 
 - **Improved UI/UX**
-  - Enhance the user interface for better usability
-  - Responsive design for mobile and tablet
+  - [ ] Enhance the user interface for better usability
+  - [ ] Responsive design for mobile and tablet
 
 ## Version 0.5
 - **Data Export**
-  - Export expense data to CSV or Excel
-  - Option to download filtered data
+  - [ ] Export expense data to CSV or Excel
+  - [ ] Option to download filtered data
 
 - **Security Enhancements**
-  - Implement password reset functionality
-  - Add two-factor authentication (2FA)
+  - [ ] Implement password reset functionality
+  - [ ] Add two-factor authentication (2FA)
 
 ## Version 1.0
 - **Comprehensive Reports**
-  - Generate detailed expense reports
-  - Monthly and yearly summaries
+  - [ ] Generate detailed expense reports
+  - [ ] Monthly and yearly summaries
 
 - **Advanced Filtering and Sorting**
-  - Advanced filters for expenses (e.g., by date range, amount)
-  - Sorting options (e.g., by date, amount, category)
+  - [ ] Advanced filters for expenses (e.g., by date range, amount)
+  - [ ] Sorting options (e.g., by date, amount, category)
 
 - **Deployment and Documentation**
-  - Prepare the project for deployment
-  - Write comprehensive documentation and user manual
+  - [ ] Prepare the project for deployment
+  - [ ] Write comprehensive documentation and user manual
 
 
 ## Installation

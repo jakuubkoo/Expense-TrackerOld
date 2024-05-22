@@ -317,4 +317,67 @@ class ExpensesControllerTest extends CustomCase
         $this->assertEquals('ID is required.', $responseContent['message']);
     }
 
+    /**
+     * Test for deleting an expense successfully.
+     *
+     * @return void
+     */
+    public function testDeleteExpenseSuccess(): void
+    {
+        // Get the fixture expense
+        $expense = $this->entityManager->getRepository(Expense::class)->findOneBy(['title' => 'Groceries']);
+
+        // simulate user authentication
+        $this->simulateUserAuthentication($this->client);
+
+        // Define the data for the expense
+        $data = [
+            'id' => $expense->getId(),
+        ];
+
+        // Send the request with the JWT token
+        $this->client->request('POST', '/api/deleteExpense', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], json_encode($data));
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertJson($this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Expense deleted', $this->client->getResponse()->getContent());
+
+        // Fetch the deleted expense from the database
+        $deletedExpense = $this->entityManager->getRepository(Expense::class)->find($data['id']);
+
+        // Assert that the expense was deleted correctly
+        $this->assertNull($deletedExpense);
+    }
+
+    /**
+     * Test case to simulate deleting a non-existing expense.
+     *
+     * @return void
+     */
+    public function testDeleteExpenseNotFound(): void
+    {
+        // simulate user authentication
+        $this->simulateUserAuthentication($this->client);
+
+        // Define the data for a non-existing expense
+        $data = [
+            'id' => 99999, // Assuming this ID does not exist
+        ];
+
+        // Send the request with the JWT token
+        $this->client->request('POST', '/api/deleteExpense', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], json_encode($data));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertJson($this->client->getResponse()->getContent());
+
+        $responseContent = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('message', $responseContent);
+        $this->assertEquals('No expense found for id 99999', $responseContent['message']);
+    }
+
 }

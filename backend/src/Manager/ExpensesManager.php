@@ -8,6 +8,7 @@ use App\Repository\ExpenseRepository;
 use App\Repository\UserRepository;
 use App\Utils\ErrorMessage;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,10 +26,12 @@ use function PHPUnit\Framework\isEmpty;
 class ExpensesManager
 {
     private ExpenseRepository $expenseRepository;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(ExpenseRepository $expenseRepository)
+    public function __construct(ExpenseRepository $expenseRepository, EntityManagerInterface $entityManager)
     {
         $this->expenseRepository = $expenseRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -202,6 +205,44 @@ class ExpensesManager
         return new JsonResponse([
             'message' => ErrorMessage::UNEXPECTED_ERROR
         ], Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Deletes an expense.
+     *
+     * @param Request $request The request object containing the JSON data.
+     * @return JsonResponse The JSON response indicating the result of the deletion.
+     */
+    public function deleteExpense(Request $request): JsonResponse
+    {
+        // Get the raw JSON content from the request
+        $jsonContent = $request->getContent();
+
+        // Decode the JSON data
+        $data = json_decode($jsonContent, true);
+
+        // Check if an ID was provided
+        if (empty($data['id'])) {
+            return new JsonResponse([
+                'message' => 'No id provided'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Fetch the existing expense entity
+        $expense = $this->expenseRepository->find($data['id']);
+        if (!$expense) {
+            return new JsonResponse([
+                'message' => 'No expense found for id ' . $data['id']
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Delete the entity
+        $this->entityManager->remove($expense);
+        $this->entityManager->flush();
+
+        return new JsonResponse([
+            'message' => 'Expense deleted'
+        ], Response::HTTP_OK);
     }
 
 }
