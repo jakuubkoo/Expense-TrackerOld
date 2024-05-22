@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Expense;
 use App\Entity\User;
+use App\Repository\ExpenseRepository;
 use App\Repository\UserRepository;
 use App\Utils\ErrorMessage;
 use DateTime;
@@ -11,6 +12,9 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Serializer\SerializerInterface;
+use function PHPUnit\Framework\isEmpty;
 
 /**
  * Class ExpensesManager
@@ -20,6 +24,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExpensesManager
 {
+    private ExpenseRepository $expenseRepository;
+
+    public function __construct(ExpenseRepository $expenseRepository)
+    {
+        $this->expenseRepository = $expenseRepository;
+    }
+
     /**
      * Verifies the data of the expense from the request.
      *
@@ -118,6 +129,79 @@ class ExpensesManager
         }
 
         return $expensesArray;
+    }
+
+    /**
+     * Updates an expense based on the provided request data.
+     *
+     * @param Request $request The request object containing the JSON data.
+     *
+     * @return JsonResponse|Expense A JsonResponse object if there was an error or the updated Expense object if successful.
+     * @throws Exception
+     */
+    public function editExpense(Request $request): JsonResponse|Expense
+    {
+        // Get the raw JSON content from the request
+        $jsonContent = $request->getContent();
+
+        // Decode the JSON data
+        $data = json_decode($jsonContent, true);
+
+        // First find if some field is not empty
+        // I hope I will find better way to handle this
+        foreach ($data as $key => $value) {
+            if (empty($value)) {
+                $errorMessageConstant = 'NO_' . strtoupper($key);
+                return new JsonResponse([
+                    'message' => constant("App\Utils\ErrorMessage::$errorMessageConstant")
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }
+
+        // Fetch the existing expense entity
+        $expense = $this->expenseRepository->find($data['id']);
+        if (!$expense) {
+            return new JsonResponse([
+                'message' => 'No expense found for id ' . $data['id']
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Update the entity with the new data if it has changed
+        $updated = false;
+
+        if (isset($data['title']) && trim($data['title']) !== '' && $data['title'] !== $expense->getTitle()) {
+            $expense->setTitle($data['title']);
+            $updated = true;
+        }
+
+        if (isset($data['amount']) && trim($data['amount']) !== '' && $data['amount'] !== $expense->getAmount()) {
+            $expense->setAmount($data['amount']);
+            $updated = true;
+        }
+
+        if (isset($data['date']) && trim($data['date']) !== '' && $data['date'] !== $expense->getDate()->format('Y-m-d')) {
+            $expense->setDate(new \DateTime($data['date']));
+            $updated = true;
+        }
+
+        if (isset($data['category']) && trim($data['category']) !== '' && $data['category'] !== $expense->getCategory()) {
+            $expense->setCategory($data['category']);
+            $updated = true;
+        }
+
+        if (isset($data['description']) && trim($data['description']) !== '' && $data['description'] !== $expense->getDescription()) {
+            $expense->setDescription($data['description']);
+            $updated = true;
+        }
+
+        // Persist the changes to the database if there were any updates
+        if ($updated) {
+            return $expense;
+        }
+
+        return new JsonResponse([
+            'message' => ErrorMessage::UNEXPECTED_ERROR
+        ], Response::HTTP_BAD_REQUEST);
     }
 
 }

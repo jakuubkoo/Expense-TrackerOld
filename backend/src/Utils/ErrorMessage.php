@@ -6,6 +6,7 @@ class ErrorMessage {
 
     const INVALID_INPUT = 'The input provided is invalid.';
     const DATABASE_ERROR = 'There was an error connecting to the database.';
+    const UNEXPECTED_ERROR = 'There was an unexpected error.';
     const NO_FIRST_NAME = 'First name is required.';
     const NO_LAST_NAME = 'Last name is required.';
     const NO_EMAIL = 'Email is required.';
@@ -18,11 +19,14 @@ class ErrorMessage {
     const UNEXPECTED_REGISTER_ERROR = 'An unexpected error occurred during registration.';
     const UNEXPECTED_LOGOUT_ERROR = 'An unexpected error occurred during logout.';
     const ALL_FIELDS_REQ_ERROR = 'All fields are required.';
+
+    const NO_ID = 'ID is required.';
+
     const NO_TITLE = 'Title is required.';
     const NO_AMOUNT = 'Amount is required.';
     const NO_DATE = 'Date is required.';
     const NO_CATEGORY = 'Category is required.';
     const NO_DESCRIPTION = 'Description is required.';
-
+    const VALUE_EMPTY = 'This value cannot be empty.';
 
 }

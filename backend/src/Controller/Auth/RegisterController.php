@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class RegisterController
- * @package YourNamespace
  *
  * This class handles the registration functionality.
  */

@@ -86,4 +86,30 @@ class ExpensesController extends AbstractController
             'message' => 'Expense added successfully!'
         ], Response::HTTP_OK);
     }
+
+    /**
+     * Handles the editExpense endpoint.
+     *
+     * @param Request $request The request object.
+     * @param EntityManagerInterface $em The entity manager.
+     * @return JsonResponse The JSON response indicating the success or failure of editing the expense.
+     * @throws Exception
+     */
+    #[Route('/editExpense', name: 'edit_expense', methods: ['POST'])]
+    public function editExpense(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+
+        $expense = $this->expensesManager->editExpense($request);
+
+        if ($expense instanceof JsonResponse) {
+            return $expense;
+        }
+
+        $em->persist($expense);
+        $em->flush();
+
+        return new JsonResponse([
+            'message' => 'Expense edited successfully!'
+        ], Response::HTTP_OK);
+    }
 }
