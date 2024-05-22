@@ -4,42 +4,45 @@
  */
 namespace App\Tests\Controller;
 
+use App\Repository\UserRepository;
+use App\Tests\CustomCase;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class ExpensesControllerTest extends WebTestCase
+class ExpensesControllerTest extends CustomCase
 {
+
+    /**
+     * @var KernelBrowser Instance for making requests.
+     */
+    private object $client;
+
+    /**
+     * Set up before each test.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
+        parent::setUp();
+    }
 
     /**
      * Test case for adding an expense successfully.
      */
     public function testAddExpenseSuccess(): void
     {
-        $client = static::createClient();
 
-        // Create a user and get the JWT token (adjust this part according to your user creation and login logic)
-        $client->request(
-            'POST',
-            '/api/login_check',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode([
-                'email' => 'test@test.com',
-                'password' => 'test'
-            ])
-        );
-        $loginResponse = $client->getResponse();
-
-        $this->assertEquals(Response::HTTP_OK, $loginResponse->getStatusCode());
-        $loginData = json_decode($loginResponse->getContent(), true);
-        $this->assertArrayHasKey('token', $loginData);
-        $this->assertNotEmpty($loginData['token']);
+        // simulate user authentication
+        $this->simulateUserAuthentication($this->client);
 
         // Send the request with the JWT token
-        $client->request('POST', '/api/addExpense', [], [], [
+        $this->client->request('POST', '/api/addExpense', [], [], [
             'CONTENT_TYPE' => 'application/json',
-            'HTTP_Authorization' => 'Bearer ' . $loginData['token'],
         ], json_encode([
             'title' => 'Groceries',
             'amount' => 50.25,
@@ -50,8 +53,8 @@ class ExpensesControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertJson($client->getResponse()->getContent());
-        $this->assertStringContainsString('Expense added successfully!', $client->getResponse()->getContent());
+        $this->assertJson($this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Expense added successfully!', $this->client->getResponse()->getContent());
     }
 
     /**
@@ -59,32 +62,12 @@ class ExpensesControllerTest extends WebTestCase
      */
     public function testAddExpenseValidationError(): void
     {
-        $client = static::createClient();
-
-        // Create a user and get the JWT token
-        // Create a user and get the JWT token (adjust this part according to your user creation and login logic)
-        $client->request(
-            'POST',
-            '/api/login_check',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode([
-                'email' => 'test@test.com',
-                'password' => 'test'
-            ])
-        );
-        $loginResponse = $client->getResponse();
-
-        $this->assertEquals(Response::HTTP_OK, $loginResponse->getStatusCode());
-        $loginData = json_decode($loginResponse->getContent(), true);
-        $this->assertArrayHasKey('token', $loginData);
-        $this->assertNotEmpty($loginData['token']);
+        // simulate user authentication
+        $this->simulateUserAuthentication($this->client);
 
         // Send the request with the JWT token and missing 'title' field
-        $client->request('POST', '/api/addExpense', [], [], [
+        $this->client->request('POST', '/api/addExpense', [], [], [
             'CONTENT_TYPE' => 'application/json',
-            'HTTP_Authorization' => 'Bearer ' . $loginData['token'],
         ], json_encode([
             'amount' => 50.25,
             'date' => '2024-05-21',
@@ -93,16 +76,25 @@ class ExpensesControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertJson($client->getResponse()->getContent());
+        $this->assertJson($this->client->getResponse()->getContent());
 
-        $responseContent = json_decode($client->getResponse()->getContent(), true);
+        $responseContent = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('message', $responseContent);
         $this->assertEquals("The field 'title' is missing.", $responseContent['message']);
 
+        // simulate user authentication
+        $this->simulateUserAuthentication($this->client);
+
+    }
+
+    public function testAddExpenseValidationError2(): void
+    {
+        // simulate user authentication
+        $this->simulateUserAuthentication($this->client);
+
         // Send the request with the JWT token and empty 'title' field
-        $client->request('POST', '/api/addExpense', [], [], [
+        $this->client->request('POST', '/api/addExpense', [], [], [
             'CONTENT_TYPE' => 'application/json',
-            'HTTP_Authorization' => 'Bearer ' . $loginData['token'],
         ], json_encode([
             'title' => '',
             'amount' => 50.25,
@@ -112,9 +104,9 @@ class ExpensesControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertJson($client->getResponse()->getContent());
+        $this->assertJson($this->client->getResponse()->getContent());
 
-        $responseContent = json_decode($client->getResponse()->getContent(), true);
+        $responseContent = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('message', $responseContent);
         $this->assertEquals('Title is required.', $responseContent['message']);
     }

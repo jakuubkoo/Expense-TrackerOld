@@ -14,7 +14,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class TokenValidationMiddleware
 {
-    private bool $isTestEnvironment;
 
     /**
      * @var TokenManager
@@ -27,12 +26,10 @@ class TokenValidationMiddleware
      * TokenValidationMiddleware constructor.
      *
      * @param TokenManager $tokenManager Manages operations related to JWT tokens.
-     * @param ParameterBagInterface $parameterBag The parameter bag containing environment information.
      */
-    public function __construct(TokenManager $tokenManager, ParameterBagInterface $parameterBag)
+    public function __construct(TokenManager $tokenManager)
     {
         $this->tokenManager = $tokenManager;
-        $this->isTestEnvironment = $parameterBag->get('kernel.environment') === 'test';
     }
 
     /**
@@ -47,11 +44,6 @@ class TokenValidationMiddleware
      */
     public function onKernelRequest(RequestEvent $event): void
     {
-        // If in test environment, skip token validation
-        // TODO: Need fix this
-        if ($this->isTestEnvironment) {
-            return;
-        }
 
         $request = $event->getRequest();
         $token = $this->tokenManager->getTokenFromRequest($request);
