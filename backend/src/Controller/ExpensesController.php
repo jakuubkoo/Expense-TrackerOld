@@ -6,6 +6,7 @@ use App\Entity\Expense;
 use App\Entity\User;
 use App\Manager\ExpensesManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,17 +37,22 @@ class ExpensesController extends AbstractController
     }
 
     /**
-     * A placeholder endpoint for expenses.
+     * Handles the expenses endpoint.
      *
-     * @return JsonResponse A JSON response with a message.
+     * @Route("/expenses", name="expense", methods={"POST"})
+     * @param EntityManagerInterface $em The entity manager.
+     * @return JsonResponse The JSON response containing expenses data.
      */
-    #[Route('/expenses', name: 'expense', methods: ['POST'])]
-    public function expenses(): JsonResponse
+    public function expenses(EntityManagerInterface $em): JsonResponse
     {
-        return new JsonResponse([
-            'message' => ''
-        ], Response::HTTP_OK);
+        // Retrieve expenses data (you can replace this with your actual logic)
+        $expensesData = $this->expensesManager->getAllExpenses(
+            $em->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUserIdentifier()])
+        );
+
+        return new JsonResponse(['expenses' => $expensesData], Response::HTTP_OK);
     }
+
 
     /**
      * Adds a new expense.
@@ -59,7 +65,7 @@ class ExpensesController extends AbstractController
      *
      * @return JsonResponse A JSON response indicating success or containing error messages.
      *
-     * @throws \Exception If there is an error during the entity creation process.
+     * @throws Exception If there is an error during the entity creation process.
      */
     #[Route('/addExpense', name: 'add_expense', methods: ['POST'])]
     public function addExpense(Request $request, EntityManagerInterface $em): JsonResponse

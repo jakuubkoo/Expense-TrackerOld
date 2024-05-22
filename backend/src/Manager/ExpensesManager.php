@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Expense;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Utils\ErrorMessage;
 use DateTime;
 use Exception;
@@ -93,4 +94,30 @@ class ExpensesManager
 
         return $expense;
     }
+
+    /**
+     * Retrieves all expenses for a user.
+     *
+     * @param User $user The user for whom to retrieve expenses.
+     * @return array<mixed> An array of Expense objects.
+     */
+    public function getAllExpenses(User $user): array
+    {
+        $expensesArray = [];
+
+        foreach ($user->getExpenses() as $expense) {
+            $expenseArray = [
+                'title' => $expense->getTitle(),
+                'amount' => $expense->getAmount(),
+                'date' => $expense->getDate()->format('Y-m-d'),
+                'category' => $expense->getCategory(),
+                'description' => $expense->getDescription(),
+            ];
+
+            $expensesArray[] = $expenseArray;
+        }
+
+        return $expensesArray;
+    }
+
 }

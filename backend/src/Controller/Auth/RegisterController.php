@@ -11,26 +11,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 /**
  * Class RegisterController
+ * @package YourNamespace
  *
- * This controller handles the registration of new users through the API.
- * Users can register by providing their first name, last name, email, password,
- * and password confirmation. Upon successful registration, the user's information
- * is persisted in the database.
- *
- * @package App\Controller\Auth
+ * This class handles the registration functionality.
  */
 #[Route('/api', name: 'api_')]
 class RegisterController extends AbstractController
 {
+
     /**
-     * Registers a new user.
+     * Register a new user.
      *
-     * @param Request $request The HTTP request object
-     * @param UserRepository $repository The user repository
-     * @param UserManager $manager The user manager
-     * @return JsonResponse The JSON response containing the result of the registration attempt
+     * @param Request $request The HTTP request object.
+     * @param UserRepository $repository The user repository to check if email already exists.
+     * @param UserManager $manager The user manager to execute the registration.
+     * @return JsonResponse The JSON response containing the registration success message or error message.
      */
     #[Route('/register', name: 'register', methods: ['POST'])]
     public function register(Request $request, UserRepository $repository, UserManager $manager): JsonResponse
