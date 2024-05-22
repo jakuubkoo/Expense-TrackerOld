@@ -110,4 +110,36 @@ class ExpensesControllerTest extends CustomCase
         $this->assertArrayHasKey('message', $responseContent);
         $this->assertEquals('Title is required.', $responseContent['message']);
     }
+
+    /**
+     * Test case for retrieving expenses successfully.
+     */
+    public function testGetExpensesSuccess(): void
+    {
+        // simulate user authentication
+        $this->simulateUserAuthentication($this->client);
+
+        // Send the request with the JWT token
+        $this->client->request('POST', '/api/expenses', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertJson($this->client->getResponse()->getContent());
+
+        $responseContent = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('expenses', $responseContent);
+        $this->assertIsArray($responseContent['expenses']);
+        $this->assertNotEmpty($responseContent['expenses']);
+
+        // Check the content of the first expense
+        $expense = $responseContent['expenses'][0];
+        $this->assertEquals('Groceries', $expense['title']);
+        $this->assertEquals('Purchased groceries for the week', $expense['description']);
+        $this->assertEquals('2024-05-21', $expense['date']);
+        $this->assertEquals('Food', $expense['category']);
+        $this->assertEquals(50.25, $expense['amount']);
+    }
+
 }

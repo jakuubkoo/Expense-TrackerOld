@@ -52,7 +52,10 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $manager->flush();
 
+        $this->addReference('test-user', $user);
+
         // commit and re-start new transaction
         $this->connection->commit();
     }
+
 }

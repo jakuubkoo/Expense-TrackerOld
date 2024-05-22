@@ -39,10 +39,10 @@ class ExpensesController extends AbstractController
     /**
      * Handles the expenses endpoint.
      *
-     * @Route("/expenses", name="expense", methods={"POST"})
      * @param EntityManagerInterface $em The entity manager.
      * @return JsonResponse The JSON response containing expenses data.
      */
+    #[Route('/expenses', name: 'expenses', methods: ['POST'])]
     public function expenses(EntityManagerInterface $em): JsonResponse
     {
         // Retrieve expenses data (you can replace this with your actual logic)
