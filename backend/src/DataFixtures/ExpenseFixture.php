@@ -39,7 +39,7 @@ class ExpenseFixture extends Fixture implements DependentFixtureInterface
         $expense->setDescription('Purchased groceries for the week');
         $expense->setDate(new DateTime('2024-05-21'));
         $expense->setCategory('Food');
-        $expense->setAmount(50.25);
+        $expense->setAmount('50.25');
 
         // Get the user reference from UserFixtures and set this to your expense.
         $user = $this->getReference('test-user');
