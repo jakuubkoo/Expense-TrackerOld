@@ -124,4 +124,16 @@ class ExpensesController extends AbstractController
     {
         return $this->expensesManager->deleteExpense($request);
     }
+
+    /**
+     * Filters expenses by category ID.
+     *
+     * @param int $id The category ID to filter expenses.
+     * @return JsonResponse The JSON response containing filtered expenses data.
+     */
+    #[Route('/filterByCategory/{id}', name: 'filter_expense_by_category', methods: ['POST'])]
+    public function filterExpensesByCategory(int $id): JsonResponse
+    {
+        return $this->expensesManager->filterExpenses($id);
+    }
 }

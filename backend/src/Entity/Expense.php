@@ -151,4 +151,21 @@ class Expense
         return $this;
     }
 
+    /**
+     * Fetches the object's properties as an array.
+     *
+     * @return array<mixed> Returns an associative array containing the object's properties and their values.
+     */
+    public function getAsArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'amount' => $this->getAmount(),
+            'date' => $this->getDate()->format('Y-m-d'),
+            'category' => $this->getCategory()->getName(),
+            'description' => $this->getDescription(),
+        ];
+    }
+
 }

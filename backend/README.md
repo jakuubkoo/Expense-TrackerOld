@@ -31,7 +31,7 @@ Expense Tracker is a web application designed to help users manage their persona
 
 - **Expense Categorization**
   - [x] Add expense categories
-  - [ ] Filter expenses by categories
+  - [x] Filter expenses by categories
 
 ## Version 0.3
 - **Expense Statistics**

@@ -123,4 +123,19 @@ class Category
 
         return $this;
     }
+
+    /**
+     * Returns the object data as an associative array.
+     *
+     * @return array<mixed> An array with the object data.
+     */
+    public function getAsArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+        ];
+    }
+
 }

@@ -4,6 +4,7 @@
  */
 namespace App\Tests\Controller;
 
+use App\Entity\Category;
 use App\Entity\Expense;
 use App\Repository\UserRepository;
 use App\Tests\CustomCase;
@@ -186,7 +187,7 @@ class ExpensesControllerTest extends CustomCase
             'title' => 'Updated Expense',
             'amount' => 150.00,
             'date' => '2024-05-22',
-            'category' => 'Updated Category',
+            'category' => 'Food',
             'description' => 'Updated Description'
         ];
 
@@ -207,7 +208,7 @@ class ExpensesControllerTest extends CustomCase
         $this->assertEquals('Updated Expense', $updatedExpense->getTitle());
         $this->assertEquals(150.00, $updatedExpense->getAmount());
         $this->assertEquals('2024-05-22', $updatedExpense->getDate()->format('Y-m-d'));
-        $this->assertEquals('Updated Category', $updatedExpense->getCategory());
+        $this->assertEquals('Food', $updatedExpense->getCategory()->getName());
         $this->assertEquals('Updated Description', $updatedExpense->getDescription());
     }
 
@@ -404,6 +405,50 @@ class ExpensesControllerTest extends CustomCase
         $responseContent = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('message', $responseContent);
         $this->assertEquals('No expense found for id 99999', $responseContent['message']);
+    }
+
+    /**
+     * Test for filtering expenses by category successfully.
+     *
+     * This method tests the functionality of filtering expenses by category using the '/filterByCategory/{id}' endpoint.
+     * It simulates user authentication, sends a POST request with the category ID, and asserts that the response is successful.
+     *
+     * @return void
+     */
+    public function testFilterExpensesByCategorySuccess(): void
+    {
+        // Get the fixture category
+        $category = $this->entityManager->getRepository(Category::class)->findOneBy(['name' => 'Food']);
+
+        // simulate user authentication
+        $this->simulateUserAuthentication($this->client);
+
+        // Send the request with the JWT token
+        $this->client->request('POST', '/api/filterByCategory/' . $category->getId(), [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertJson($this->client->getResponse()->getContent());
+
+        $responseContent = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('expense', $responseContent);
+
+        // Check the content of the expense in the response
+        $expense = $responseContent['expense'];
+        $this->assertArrayHasKey('title', $expense);
+        $this->assertArrayHasKey('amount', $expense);
+        $this->assertArrayHasKey('date', $expense);
+        $this->assertArrayHasKey('category', $expense);
+        $this->assertArrayHasKey('description', $expense);
+
+        // Validate the values of the expense
+        $this->assertEquals('Groceries', $expense['title']);
+        $this->assertEquals('50.25', $expense['amount']);
+        $this->assertEquals('2024-05-21', $expense['date']);
+        $this->assertEquals('Food', $expense['category']);
+        $this->assertEquals('Purchased groceries for the week', $expense['description']);
     }
 
 }

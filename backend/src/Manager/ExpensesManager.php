@@ -131,15 +131,7 @@ class ExpensesManager
         $expensesArray = [];
 
         foreach ($user->getExpenses() as $expense) {
-            $expenseArray = [
-                'title' => $expense->getTitle(),
-                'amount' => $expense->getAmount(),
-                'date' => $expense->getDate()->format('Y-m-d'),
-                'category' => $expense->getCategory()->getName(),
-                'description' => $expense->getDescription(),
-            ];
-
-            $expensesArray[] = $expenseArray;
+            $expensesArray[] = $expense->getAsArray();
         }
 
         return $expensesArray;
@@ -265,6 +257,26 @@ class ExpensesManager
         return new JsonResponse([
             'message' => 'Expense deleted'
         ], Response::HTTP_OK);
+    }
+
+    /**
+     * Filters the expenses for a given category ID.
+     *
+     * @param int $id The ID of the category.
+     * @return JsonResponse The JSON response containing the filtered expenses.
+     */
+    public function filterExpenses(int $id): JsonResponse
+    {
+
+        $category = $this->entityManager->getRepository(Category::class)->find($id);
+
+        $expenses = [];
+
+        foreach ($category->getExpenses() as $expense){
+            $expenses = ['expense' => $expense->getAsArray()];
+        }
+
+        return new JsonResponse($expenses, Response::HTTP_OK);
     }
 
 }
