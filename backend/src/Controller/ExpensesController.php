@@ -124,4 +124,10 @@ class ExpensesController extends AbstractController
     {
         return $this->expensesManager->deleteExpense($request);
     }
+
+    #[Route('/addExpenseCategory', name: 'add_expense_category', methods: ['POST'])]
+    public function addExpenseCategory(Request $request): JsonResponse
+    {
+        return $this->expensesManager->deleteExpense($request);
+    }
 }

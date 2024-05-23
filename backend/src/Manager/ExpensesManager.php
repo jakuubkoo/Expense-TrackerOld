@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Entity\Category;
 use App\Entity\Expense;
 use App\Entity\User;
 use App\Repository\ExpenseRepository;
@@ -98,11 +99,21 @@ class ExpensesManager
         // Decode the JSON data
         $data = json_decode($jsonContent, true);
 
+        $category = $this->entityManager->getRepository(Category::class)->findOneBy(['name' => $data['category']]);
+
+        if(!$category){
+            $category = new Category();
+            $category->setName($data['category']);
+            $category->setDescription('');
+            $this->entityManager->persist($category);
+            $this->entityManager->flush();
+        }
+
         $expense = new Expense();
         $expense->setTitle($data['title']);
         $expense->setAmount($data['amount']);
         $expense->setDate(new DateTime($data['date']));
-        $expense->setCategory($data['category']);
+        $expense->setCategory($category);
         $expense->setDescription($data['description']);
         $expense->setUser($user);
 
@@ -124,7 +135,7 @@ class ExpensesManager
                 'title' => $expense->getTitle(),
                 'amount' => $expense->getAmount(),
                 'date' => $expense->getDate()->format('Y-m-d'),
-                'category' => $expense->getCategory(),
+                'category' => $expense->getCategory()->getName(),
                 'description' => $expense->getDescription(),
             ];
 
@@ -187,9 +198,20 @@ class ExpensesManager
             $updated = true;
         }
 
-        if (isset($data['category']) && trim($data['category']) !== '' && $data['category'] !== $expense->getCategory()) {
-            $expense->setCategory($data['category']);
-            $updated = true;
+        if (isset($data['category'])) {
+            $categoryName = trim($data['category']);
+
+            if ($categoryName !== '' && $categoryName !== $expense->getCategory()?->getName()) {
+                $category = $this->entityManager->getRepository(Category::class)->findOneBy(['name' => $categoryName]);
+                if ($category) {
+                    $expense->setCategory($category);
+                    $updated = true;
+                } else {
+                    return new JsonResponse([
+                        'message' => 'No category found for name ' . $categoryName
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+            }
         }
 
         if (isset($data['description']) && trim($data['description']) !== '' && $data['description'] !== $expense->getDescription()) {

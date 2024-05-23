@@ -318,7 +318,22 @@ class ExpensesControllerTest extends CustomCase
     }
 
     /**
-     * Test for deleting an expense successfully.
+     * Test the successful deletion of an expense.
+     *
+     * This test method verifies that an expense can be successfully deleted by making a POST request to the '/api/deleteExpense' endpoint.
+     * It performs the following steps:
+     *
+     * 1. Get the fixture expense by querying the database using the 'title' attribute.
+     * 2. Simulate user authentication using the 'simulateUserAuthentication' method.
+     * 3. Define the data for the expense by setting the 'id' attribute.
+     * 4. Send a POST request to the '/api/deleteExpense' endpoint with the JSON payload containing the expense data.
+     * 5. Perform the following assertions:
+     *     - Assert that the response is successful.
+     *     - Assert that the response status code is 200 (HTTP_OK).
+     *     - Assert that the response content is JSON.
+     *     - Assert that the response content contains the string 'Expense deleted'.
+     * 6. Fetch the deleted expense from the database using its ID.
+     * 7. Assert that the deleted expense is null, indicating that it was successfully deleted.
      *
      * @return void
      */
@@ -353,7 +368,18 @@ class ExpensesControllerTest extends CustomCase
     }
 
     /**
-     * Test case to simulate deleting a non-existing expense.
+     * Test the scenario where the expense to be deleted is not found.
+     *
+     * This method tests the behavior of deleting an expense that does not exist in the system.
+     * It simulates user authentication using the `simulateUserAuthentication` method.
+     * The data for the non-existing expense is defined with the ID set to a non-existent value (99999).
+     * The request is then sent to the `/api/deleteExpense` endpoint with the data encoded in JSON format.
+     *
+     * After receiving the response, several assertions are made to ensure the expected behavior:
+     * - The response status code should be HTTP_BAD_REQUEST (400).
+     * - The response content should be valid JSON.
+     * - The response content should contain the 'message' key.
+     * - The value of the 'message' key should be 'No expense found for id 99999'.
      *
      * @return void
      */
