@@ -30,7 +30,7 @@ Expense Tracker is a web application designed to help users manage their persona
   - [x] Delete expenses
 
 - **Expense Categorization**
-  - [ ] Add expense categories
+  - [x] Add expense categories
   - [ ] Filter expenses by categories
 
 ## Version 0.3

@@ -29,4 +29,8 @@ class ErrorMessage {
     const NO_DESCRIPTION = 'Description is required.';
     const VALUE_EMPTY = 'This value cannot be empty.';
 
+    const NO_CATEGORY_FOUND = 'No category found for id.';
+    const NO_NAME = 'Name is required.';
+    const UNEXPECTED_CATEGORY_ERROR = 'An unexpected error occurred while processing the category.';
+
 }
