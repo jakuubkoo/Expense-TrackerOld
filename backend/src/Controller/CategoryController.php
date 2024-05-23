@@ -88,13 +88,13 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * Delete Expense method.
+     * Delete a category by its ID
      *
-     * This method removes the specified expense category.
+     * Deletes a category based on its ID by making a DELETE request to the '/deleteCategory/{id}' route.
      *
-     * @param Category $category The category entity to be deleted.
-     * @return Response The HTTP response.
+     * @param int $id The ID of the category to delete
      *
+     * @return Response The response from removing the category
      */
     #[Route('/deleteCategory/{id}', name: 'delete_category', methods: ['DELETE'])]
     public function deleteCategory($id): Response
